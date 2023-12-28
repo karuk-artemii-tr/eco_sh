@@ -88,7 +88,7 @@
         <div class="block-header">Вибір даних:</div>
         <div class="main-container004">
         <select id="type1" name="type1" class="main-select">
-          <option value='all' selected>Всі підрозділи</option>
+          <option value='all' selected>Всі об'єкти</option>
           <?php
               $temp = 1;
               $sql01 = "SELECT elementname FROM objects";
@@ -141,7 +141,7 @@
         <!-- <span class="main-text">Заміна значення показника:</span> -->
         <div class="main-container002">
           <select id="type" name="type" class="main-select">
-            <option value='all' selected>Всі підрозділи</option>
+            <option value='all' selected>Всі об'єкти</option>
             <?php
                 $temp = 1;
                 $sql0 = "SELECT elementname FROM objects";
@@ -319,13 +319,11 @@
             $sql = "SELECT * FROM resourсу_quantity WHERE str_el = $type1 AND year = $year1 AND resource = $pokaznik";
           }
           $answer = mysqli_query($con, $sql) or die (mysqli_error($con));
-          $sql1 = "SELECT measure FROM resources WHERE id = $pokaznik";
-          $answer1 = mysqli_query($con, $sql1) or die (mysqli_error($con));
-          $row1 = mysqli_fetch_array($answer1);
+          
             
           while($row = mysqli_fetch_array($answer)) {
             echo '<span class="main-text034">
-            Показники за '.$row[1].' рік (в '.$row1[0].'):
+            Показники за '.$row[1].' рік:
           </span>';
             echo '<div class="main-container036">
               <div class="main-container037">';
@@ -380,7 +378,7 @@
           $answer = mysqli_query($con, $sql) or die (mysqli_error($con));
           
           $text = array('
-          <span class="main-text223">', ' рік (в ', ')</span>', '
+          <span class="main-text223">', ' рік</span>', '
           <div class="main-container144">
             <div class="main-container146">
             <span class="main-text227">', '</span>
@@ -466,17 +464,14 @@
         $graph2 = array();
         $graph1 = array();
         $x = 0;
-        $sqln = "SELECT measure FROM resources WHERE id = $pokaznik";
-        $answern = mysqli_query($con, $sqln) or die (mysqli_error($con));
-        $rown = mysqli_fetch_array($answern);
         while ($row = mysqli_fetch_array($answer)) {
           echo '<div class="main-container143">';
-          $temp = array($row[1], $rown[0], '', 'Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень');
-          for ($j = 0; $j < 9; $j++) {
+          $temp = array($row[1], '', 'Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень');
+          for ($j = 0; $j < 8; $j++) {
             echo $text[$j];
             echo $temp[$j];
           }
-          echo $text[9];
+          echo $text[8];
           echo '<div class="main-container164">
           ';
           $averyear = 0;
@@ -550,11 +545,11 @@
               }
               echo "</div></div>";
             $temp = array('Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень');
-            for ($i = 3; $i < 9; $i++) {
+            for ($i = 2; $i < 8; $i++) {
               echo $text[$i];
-              echo $temp[$i - 3];
+              echo $temp[$i - 2];
             }
-            echo $text[9];
+            echo $text[8];
             $summ2 += $row[4];
             array_push($graph1, [$x, $aver]);
             $row = mysqli_fetch_array($answer);
@@ -970,14 +965,12 @@
           $sql = "SELECT * from comments;";
           $answer = mysqli_query($con, $sql) or die (mysqli_error($con));
           while ($row = mysqli_fetch_array($answer)) {
-            $sql1 = "SELECT name from resources where id = $row[3];";
-            $answer1 = mysqli_query($con, $sql1) or die (mysqli_error($con));
-            $row1 = mysqli_fetch_array($answer1);
+
             echo '<div class="main-container246">
             <div class="main-container247"><span>'.$row[0].'</span></div>
             <div class="main-container248"><span>'.$row[1].'</span></div>
             <div class="main-container249"><span>'.$row[2].'</span></div>
-            <div class="main-container250"><span>'.$row1[0].'</span></div>
+            <div class="main-container250"><span>'.$row[3].'</span></div>
             <div class="main-container251"><span>'.$row[4].'</span></div>
             <div class="main-container252"><span>'.$row[5].'</span></div>
           </div>
@@ -1018,11 +1011,11 @@
               <div class="main-container054"><span class="main-text053">Місяць</span></div>
               <div class="main-container054" style="width: 150px;"><span class="main-text053">Підрозділ</span></div>
               <div class="main-container054" style="width: 150px;"><span class="main-text053">Ресурс</span></div>
-              <div class="main-container054"><span class="main-text053">Площа</span></div>
-              <div class="main-container054" style="width: 150px;"><span class="main-text053">Витрати</span></div>
+              <div class="main-container054"><span class="main-text053">Площа, м2</span></div>
+              <div class="main-container054"><span class="main-text053">Витрати, грн</span></div>
               <div class="main-container054"><span class="main-text053">Індикатор</span></div>';
             echo "</div>";
-            $monthes = array('Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень');
+
           while($row = mysqli_fetch_array($answer)) {
               echo '<div class="main-container051">
                 <div class="main-container054">
@@ -1037,11 +1030,11 @@
                   $sql2 = "SELECT * FROM resources WHERE id = $row[3]";
                   $answer2 = mysqli_query($con, $sql2) or die (mysqli_error($con));
                   $row2 = mysqli_fetch_array($answer2);
-                  echo "<div class='main-container054'><span class='main-text053'>".$monthes[$row[2] - 1]."</span></div>";
+                  echo "<div class='main-container054'><span class='main-text053'>".$row[2]."</span></div>";
                   echo "<div class='main-container054' style='width: 150px;'><span class='main-text053'>".$row1[1]."</span></div>";
                   echo "<div class='main-container054' style='width: 150px;'><span class='main-text053'>".$row2[1]."</span></div>";
-                  echo "<div class='main-container054'><span class='main-text053'>".$row1[2]." м^2</span></div>";
-                  echo "<div class='main-container054' style='width: 150px;'><span class='main-text053'>".$row[4]." ".$row2[2]."</span></div>";
+                  echo "<div class='main-container054'><span class='main-text053'>".$row1[2]."</span></div>";
+                  echo "<div class='main-container054'><span class='main-text053'>".$row[4]."</span></div>";
                   echo "<div class='main-container054'><span class='main-text053'>".($row[4] / $row1[2])."</span></div>";
                   
                 echo "</div>";
@@ -1070,7 +1063,6 @@
             <div class="main-containerspec"><span class="main-text053">Викиди CO2</span></div>
             <div class="main-containerspec"><span class="main-text053">Індикатор питомих викидів</span></div>';
           echo "</div>";
-          $monthes = array('Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень');
 
         while($row = mysqli_fetch_array($answer)) {
             echo '<div class="main-container051">
@@ -1091,13 +1083,27 @@
                 $sql3 = "SELECT * FROM resourсу_quantity where resource = 9 and year = $row[1] and month = $row[2] and str_el = 1;";
                 $answer3 = mysqli_query($con, $sql3) or die (mysqli_error($con));
                 $row3 = mysqli_fetch_array($answer3);
-                echo "<div class='main-containerspec'><span class='main-text053'>".$monthes[$row[2] - 1]."</span></div>";
+                $monthsInUkrainian = array(
+                  1 => 'Січень',
+                  2 => 'Лютий',
+                  3 => 'Березень',
+                  4 => 'Квітень',
+                  5 => 'Травень',
+                  6 => 'Червень',
+                  7 => 'Липень',
+                  8 => 'Серпень',
+                  9 => 'Вересень',
+                  10 => 'Жовтень',
+                  11 => 'Листопад',
+                  12 => 'Грудень'
+              );
+                echo "<div class='main-containerspec'><span class='main-text053'>".$monthsInUkrainian[$row3[2]]."</span></div>";
                 echo "<div class='main-containerspec'><span class='main-text053'>".$row1[1]."</span></div>";
                 echo "<div class='main-containerspec'><span class='main-text053'>Електроенергія</span></div>";
-                echo "<div class='main-containerspec'><span class='main-text053'>".$row2[4]." кВт*год</span></div>";
-                echo "<div class='main-containerspec'><span class='main-text053'>".$row[4]." кВт*год</span></div>";
+                echo "<div class='main-containerspec'><span class='main-text053'>".$row2[4]."</span></div>";
+                echo "<div class='main-containerspec'><span class='main-text053'>".$row[4]."</span></div>";
                 echo "<div class='main-containerspec'><span class='main-text053'>".(round($row2[4] / $row[4], 2))."</span></div>";
-                echo "<div class='main-containerspec'><span class='main-text053'>".$row3[4]." тон</span></div>";
+                echo "<div class='main-containerspec'><span class='main-text053'>".$row3[4]."</span></div>";
                 echo "<div class='main-containerspec'><span class='main-text053'>".(round($row3[4] / $row[4], 2))."</span></div>";
                 
               echo "</div>";
